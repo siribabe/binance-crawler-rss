@@ -2,7 +2,7 @@ name: Binance RSS Crawler
 
 on:
   schedule:
-    - cron: "0 */2 * * *"   # 每 2 小时
+    - cron: "0 0,8,16 * * *"   # 每 8 小时
   workflow_dispatch:
 
 jobs:
