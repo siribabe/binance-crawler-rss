@@ -2,8 +2,8 @@ name: Binance RSS Crawler
 
 on:
   schedule:
-    - cron: "0 */2 * * *"   # 每 2 小时运行一次
-  workflow_dispatch:       # 允许手动点击运行
+    - cron: "0 */2 * * *"   # 每 2 小时
+  workflow_dispatch:
 
 jobs:
   crawl:
@@ -26,3 +26,17 @@ jobs:
       - name: Run crawler
         run: |
           python Crawler/run_all.py
+
+      #准备 GitHub Pages 目录
+      - name: Prepare public directory
+        run: |
+          mkdir -p public
+          cp Crawler/binance/feeds/*.xml public/
+          cp Crawler/binance_detail/feeds/*.xml public/
+
+      #  发布到 gh-pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
