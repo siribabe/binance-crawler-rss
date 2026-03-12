@@ -93,7 +93,7 @@ class RSSGenerator:
         return output_file
     
     def _add_content_encoded(self, output_file: str, articles: List[Dict]):
-        """后处理：添加 content:encoded 和 dc:creator"""
+        """后处理：添加 content:encoded 和 dc:creator，按 link 匹配避免顺序错乱"""
         NS = {
             'content': 'http://purl.org/rss/1.0/modules/content/',
             'dc': 'http://purl.org/dc/elements/1.1/',
@@ -101,6 +101,9 @@ class RSSGenerator:
         
         ET.register_namespace('content', NS['content'])
         ET.register_namespace('dc', NS['dc'])
+        
+        # 用 link 建立 article 查找表
+        articles_by_link = {a.get('link', '').strip(): a for a in articles if a.get('link')}
         
         tree = ET.parse(output_file)
         root = tree.getroot()
@@ -111,10 +114,12 @@ class RSSGenerator:
         
         items = list(channel.findall('item'))
         
-        for i, item in enumerate(items):
-            if i >= len(articles):
-                break
-            article = articles[i]
+        for item in items:
+            link_elem = item.find('link')
+            item_link = (link_elem.text or '').strip() if link_elem is not None else ''
+            article = articles_by_link.get(item_link)
+            if article is None:
+                continue
             
             content = article.get('content', '')
             if content:
