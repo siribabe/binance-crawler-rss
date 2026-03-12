@@ -58,6 +58,7 @@ def main():
     crawlers = [
         ("Binance Blog 爬虫", os.path.join(base_dir, "binance", "main.py")),
         ("Binance Square 详情爬虫", os.path.join(base_dir, "binance_detail", "main.py")),
+        ("URL 列表爬虫", os.path.join(base_dir, "url_list", "main.py")),
     ]
     
     # 统计结果

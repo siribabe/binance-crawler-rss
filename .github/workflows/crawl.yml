@@ -33,6 +33,7 @@ jobs:
           mkdir -p public
           cp Crawler/binance/feeds/*.xml public/
           cp Crawler/binance_detail/feeds/*.xml public/
+          cp Crawler/url_list/feeds/*.xml public/
 
       #  发布到 gh-pages
       - name: Deploy to GitHub Pages

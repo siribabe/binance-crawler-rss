@@ -39,6 +39,9 @@ namespace BlockchainNews.Services
             
             // 执行 binance_detail 爬虫
             ExecutePythonScript("binance_detail", "main.py");
+
+            // 执行 url_list 爬虫
+            ExecutePythonScript("url_list", "main.py");
         }
 
         private void ExecutePythonScript(string crawlerFolder, string scriptName)
